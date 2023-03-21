@@ -1,23 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+
+//Components
+import CreateNote from "./components/CreateNote";
+import ShowNotes from "./components/ShowNotes";
+import Nav from "./components/Nav";
+import ShowNote from "./components/ShowNote";
+import GlobalStyles from "./components/GlobalStyles";
+import EditNote from "./components/EditNote";
 
 function App() {
+  //State
+  const [clipboard, setClipboard] = useState({
+    title: "",
+    note: "",
+    date: "",
+    id: "",
+  });
+  const [notes, setNotes] = useState([]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <GlobalStyles />
+      <Nav />
+      <Routes>
+        <Route
+          path="/"
+          element={<ShowNotes notes={notes} setNotes={setNotes} />}
+        />
+        <Route
+          path="/create"
+          element={
+            <CreateNote
+              notes={notes}
+              setNotes={setNotes}
+              clipboard={clipboard}
+              setClipboard={setClipboard}
+            />
+          }
+        />
+        <Route
+          path="/note/:id"
+          element={<ShowNote notes={notes} setNotes={setNotes} />}
+        />
+
+        <Route path="/edit/:id" element={<EditNote notes={notes} setNotes={setNotes} />} />
+      </Routes>
     </div>
   );
 }
